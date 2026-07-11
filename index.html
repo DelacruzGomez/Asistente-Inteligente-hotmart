@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Asistente de Ventas Inteligente - Curso de Apps</title>
+    <title>Asistente Experto en Apps - Hotmart</title>
     <script src="https://tailwindcss.com"></script>
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
@@ -20,51 +20,94 @@
     </style>
 </head>
 <body>
+
     <div class="widget-container">
         <div id="chatWindow" class="chat-container">
             <header class="p-3 bg-indigo-600 text-white shadow-md rounded-t-xl flex justify-between items-center">
                 <div>
                     <h2 class="text-md font-bold">Asistente Virtual IA</h2>
-                    <p class="text-xs text-indigo-100">Cupos con Descuento Activos</p>
+                    <p class="text-xs text-indigo-100">Cupos con 50% de Descuento Activos</p>
                 </div>
                 <button onclick="toggleChat()" class="text-white hover:text-indigo-200 p-1">
-                    <svg xmlns="http://w3.org" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    <svg xmlns="http://w3.org" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
                 </button>
             </header>
+
             <div id="messageArea" class="message-area"></div>
+
             <div class="p-3 border-t border-gray-200 flex space-x-2 bg-white">
-                <input type="text" id="userInput" placeholder="Escribe tu duda aquí..." class="flex-grow p-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" onkeypress="if(event.key === 'Enter') sendMessage()">
-                <button id="sendButton" onclick="sendMessage()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-3 rounded-lg shadow-md flex items-center justify-center"><svg xmlns="http://w3.org" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></button>
+                <input 
+                    type="text" 
+                    id="userInput" 
+                    placeholder="Escribe tu duda aquí..." 
+                    class="flex-grow p-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    onkeypress="if(event.key === 'Enter') sendMessage()"
+                >
+                <button 
+                    id="sendButton"
+                    onclick="sendMessage()"
+                    class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-3 rounded-lg shadow-md flex items-center justify-center"
+                >
+                    <svg xmlns="http://w3.org" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="22" y1="2" x2="11" y2="13"></line>
+                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                    </svg>
+                </button>
             </div>
         </div>
-        <div id="chatButton" class="bg-indigo-600 text-white" onclick="toggleChat()"><svg id="chatIcon" xmlns="http://w3.org" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
+
+        <div id="chatButton" class="bg-indigo-600 text-white" onclick="toggleChat()">
+            <svg id="chatIcon" xmlns="http://w3.org" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+        </div>
     </div>
     <script>
         const linkAfiliado = "https://hotmart.com"; 
+        const endpointAPI = "https://googleapis.com";
+
         const chatWindow = document.getElementById('chatWindow');
         const messageArea = document.getElementById('messageArea');
         const userInput = document.getElementById('userInput');
         const sendButton = document.getElementById('sendButton');
+        
         let conversationHistory = [];
-        const systemPrompt = "Eres un Asistente Experto de Ventas altamente persuasivo. Tu objetivo es vender el programa. Nombre del producto: Aprende Cómo Crear Apps de Éxito y Sencillas ¡Sin Programar! Temario: Monetizar apps sin inversión, sin saber programar, publicarlas en Google Play y App Store, y conseguir descargas para aumentar beneficios. Garantía: 7 días protegida por Hotmart. Cierre de ventas: Entrega este enlace en formato HTML cada 2 mensajes: <a href='" + linkAfiliado + "' target='_blank' style='color: #4f46e5; font-weight: bold; text-decoration: underline;'>👉 Haz Clic Aquí para Ver el Curso y Asegurar tu Cupo 📲</a>";
-        const welcomeMessage = "¡Hola! 👋 Soy tu asesor virtual. Si buscas generar ingresos creando aplicaciones móviles sencillas y de éxito ¡Sin Programar!, estás en el lugar correcto. 🚀\n\n¿Tienes alguna duda sobre el temario o te gustaría asegurar tu cupo promocional hoy?";
+
+        const systemPrompt = `
+Eres un Asistente Experto de Ventas altamente persuasivo y empático. Tu única misión es resolver las dudas del usuario y guiarlo a comprar el curso digital.
+Nombre oficial: Aprende Cómo Crear Apps de Éxito y Sencillas ¡Sin Programar!
+Temario: Monetizar apps sin inversión, sin conocimientos de programación, publicarlas en tiendas y aumentar descargas.
+Garantía: Satisfacción de 7 días respaldada por Hotmart.
+Cierre de ventas: Incluye obligatoriamente este enlace cada 2 mensajes en formato HTML válido:
+<a href="${linkAfiliado}" target="_blank" style="color: #4f46e5; font-weight: bold; text-decoration: underline;">👉 Haz Clic Aquí para Ver el Curso y Asegurar tu Cupo 📲</a>
+`;
+        
+        const welcomeMessage = `¡Hola! 👋 Soy tu asesor virtual. Si estás buscando la manera de generar ingresos estables creando aplicaciones móviles sencillas y exitosas sin necesidad de invertir capital y totalmente ¡Sin Programar!, estás en el lugar perfecto. 🚀\n\nCuéntame, ¿tienes alguna duda sobre lo que vas a aprender dentro del programa o te gustaría saber cómo asegurar tu cupo con el 50% de descuento hoy mismo?`;
+
         function addMessage(text, role) {
             const messageDiv = document.createElement('div');
             messageDiv.classList.add(role === 'user' ? 'user-message' : 'bot-message', 'whitespace-pre-wrap');
             messageDiv.innerHTML = text;
             messageArea.appendChild(messageDiv);
-            if (text !== welcomeMessage && !text.startsWith("Escribiendo...")) { conversationHistory.push({ role, text }); }
+            if (text !== welcomeMessage && !text.startsWith("Escribiendo...")) {
+                conversationHistory.push({ role, text });
+            }
             messageArea.scrollTop = messageArea.scrollHeight;
         }
+
         function showLoading() {
             const loadingDiv = document.createElement('div');
             loadingDiv.id = 'loadingIndicator';
             loadingDiv.classList.add('bot-message');
-            loadingDiv.innerHTML = "<span>Escribiendo...</span>";
+            loadingDiv.innerHTML = `<span>Escribiendo...</span>`;
             messageArea.appendChild(loadingDiv);
             messageArea.scrollTop = messageArea.scrollHeight;
             return loadingDiv;
         }
+
         function toggleChat() {
             const isOpen = chatWindow.classList.toggle('open');
             if (isOpen && messageArea.children.length === 0) {
@@ -73,35 +116,59 @@
             }
             if (isOpen) userInput.focus();
         }
+
         async function sendMessage() {
             const userText = userInput.value.trim();
             if (userText === '') return;
+
             userInput.value = '';
             userInput.disabled = true;
             sendButton.disabled = true;
             addMessage(userText, 'user');
-            const contents = conversationHistory.map(msg => ({ role: msg.role === 'user' ? 'user' : 'model', parts: [{ text: msg.text }] }));
+
+            const contents = conversationHistory.map(msg => ({
+                role: msg.role === 'user' ? 'user' : 'model',
+                parts: [{ text: msg.text }]
+            }));
+
             const loadingIndicator = showLoading();
+
             try {
-                const payload = { contents: contents, systemInstruction: { parts: [{ text: systemPrompt }] } };
-                const endpoint = "https://googleapis.com";
-                const response = await fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-                if (!response.ok) throw new Error("Error en servidor");
-                const result = await response.json();
-                const botResponse = result.candidates[0].content.parts[0].text;
+                const payload = {
+                    contents: contents,
+                    systemInstruction: { parts: [{ text: systemPrompt }] }
+                };
+
+                const response = await fetch(endpointAPI, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) throw new Error("Error de red");
+
+                // SE INCLUYÓ EL 'AWAIT' REQUERIDO OBLIGATORIAMENTE POR JAVASCRIPT
+                const data = await response.json();
+                
+                // MAPEO DE ÍNDICES NUMÉRICOS EXPLICITOS EXIGIDO POR LA API DE GEMINI
+                const botResponse = data.candidates[0].content.parts[0].text;
+                
                 loadingIndicator.remove();
                 addMessage(botResponse, 'model');
             } catch (error) {
                 console.error(error);
                 loadingIndicator.remove();
-                addMessage("Hubo un error de conexión al procesar el mensaje. Por favor, intenta de nuevo.", 'model');
+                addMessage("Disculpa, tuve un problema de conexión. Por favor, intenta enviar tu mensaje nuevamente asegurándote de usar tu enlace oficial en internet de GitHub Pages.", 'model');
             } finally {
                 userInput.disabled = false;
                 sendButton.disabled = false;
                 userInput.focus();
             }
         }
-        document.addEventListener('DOMContentLoaded', () => { toggleChat(); });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            toggleChat();
+        });
     </script>
 </body>
 </html>
