@@ -139,8 +139,8 @@
         </div>
     </div>
     <script>
-        const apiKey = "AQ.Ab8RN6IxFrrjsoEiijYMt1xLTlp5o4akTIOstwAg0jJRKU3pJw"; 
-        const apiUrl = "https://googleapis.com" + apiKey;
+        // Dirección oficial de Gemini armada de forma directa y blindada
+        const apiUrl = "https://googleapis.com";
         const linkAfiliado = "https://hotmart.com"; 
 
         const chatWindow = document.getElementById('chatWindow');
@@ -223,7 +223,7 @@ Cierre de ventas: Entrega este enlace en formato HTML cada 2 mensajes de forma o
 
                 const result = await response.json();
                 
-                // Estructura oficial y segura de lectura para Gemini 2.5 Flash
+                // Mapeo seguro con los índices numéricos correspondientes para Gemini 2.5
                 const botResponse = result.candidates[0].content.parts[0].text;
                 
                 loadingIndicator.remove();
