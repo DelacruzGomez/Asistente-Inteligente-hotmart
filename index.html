@@ -139,10 +139,9 @@
         </div>
     </div>
     <script>
-        // Claves y Enlaces Oficiales Corregidos
-        const apiKey = "AQ.Ab8RN6Loq9E24h5vFoMAyukyeWRZ457p8faaQ7uXGH-B95dReg"; 
+        const apiKey = "AQ.Ab8RN6IxFrrjsoEiijYMt1xLTlp5o4akTIOstwAg0jJRKU3pJw"; 
         const apiUrl = "https://googleapis.com" + apiKey;
-        const linkAfiliado = "https://go.hotmart.com/N106692793T"; 
+        const linkAfiliado = "https://hotmart.com"; 
 
         const chatWindow = document.getElementById('chatWindow');
         const messageArea = document.getElementById('messageArea');
@@ -224,7 +223,7 @@ Cierre de ventas: Entrega este enlace en formato HTML cada 2 mensajes de forma o
 
                 const result = await response.json();
                 
-                // Corrección de lectura segura del objeto JSON de Gemini
+                // Estructura oficial y segura de lectura para Gemini 2.5 Flash
                 const botResponse = result.candidates[0].content.parts[0].text;
                 
                 loadingIndicator.remove();
@@ -232,7 +231,7 @@ Cierre de ventas: Entrega este enlace en formato HTML cada 2 mensajes de forma o
             } catch (error) {
                 console.error(error);
                 loadingIndicator.remove();
-                addMessage("Hubo un error al procesar tu mensaje. Asegúrate de estar abriendo el sitio web desde Netlify en internet.", 'model');
+                addMessage("Hubo un error de conexión al procesar el mensaje. Por favor, intenta de nuevo.", 'model');
             } finally {
                 userInput.disabled = false;
                 sendButton.disabled = false;
